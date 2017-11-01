@@ -14,6 +14,7 @@ using System.Xml;
 using WindowsFormsApp1.program.tools;
 using WindowsFormsApp1.project;
 using WindowsFormsApp1.project.ghost;
+using Remotes_App_Translation_Project.tools;
 
 namespace WindowsFormsApp1
 {
@@ -28,6 +29,7 @@ namespace WindowsFormsApp1
         internal static bool startOver;
         internal static int cyclesToWait;
         private static string userPauseBtnName;
+        private static bool textToSpeech;
 
 
         public AppForm()
@@ -35,8 +37,16 @@ namespace WindowsFormsApp1
             SetInstances();
             InitializeComponent();
             SetCBItems();
+            LoadPrefs();
 
         }
+
+        private void LoadPrefs()
+        {
+            textToSpeechCB.Checked = UserSettings.getIntance().GetTxtToSpeech();
+            evenGohstPathTB.Text = UserSettings.getIntance().GetEventGhostPath();
+        }
+
 
         private void SetInstances()
         {
@@ -52,6 +62,8 @@ namespace WindowsFormsApp1
             xmlPathStr = xmlPathTB.Text;
             eventGohstPath = evenGohstPathTB.Text;
             RegistryHandler.DisableWindowsErrorReporting(true);
+            UserSettings.getIntance().SaveSettings(evenGohstPathTB.Text, textToSpeechCB.Checked);
+            textToSpeech = textToSpeechCB.Checked;
             appCoordinator.WaitForRightClickOnBar();
 
         }
@@ -125,6 +137,17 @@ namespace WindowsFormsApp1
         private void ActionsBtn_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             MessageBox.Show(ActionsTxt.GetTxt(), ActionsTxt.TITLE);
+        }
+
+        private void evenGohstPathTB_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public static bool TextToSpeech
+        {
+            get => textToSpeech;
+            set => textToSpeech = value;
         }
     }
 }

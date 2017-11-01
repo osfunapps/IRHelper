@@ -31,6 +31,7 @@ namespace WindowsFormsApp1
         private ProgramExe programExe;
         private UserCommandsListener userCommandsListener;
         private TextToSpeechHelper textToSpeech;
+        private bool exitCalled;
 
         public AppCoordinator()
         {
@@ -88,10 +89,16 @@ namespace WindowsFormsApp1
             Console.WriteLine("on learn ir clicked");
             var nextNodeName = xmlModifier.GetNextValName();
             mouseCoordinator.ShowMouseNotification(nextNodeName);
+            HandleTextToSpeech(nextNodeName);
+            userCommandsListener.ListinToUserCommands();
+        }
+
+        private void HandleTextToSpeech(string nextNodeName)
+        {
+            if(!AppForm.TextToSpeech)return;
             Task t = Task.Run(() => {
                 textToSpeech.SayBtn(nextNodeName);
             });
-            userCommandsListener.ListinToUserCommands();
         }
 
         public void OnUserSkipped()
@@ -99,7 +106,8 @@ namespace WindowsFormsApp1
             Console.WriteLine("on user skipped");
             var finished = xmlModifier.SkipNextValAndFinish();
             var nextVal = xmlModifier.GetNextValName();
-            textToSpeech.SayBtn(nextVal);
+            if(AppForm.TextToSpeech)
+                textToSpeech.SayBtn(nextVal);
             if (!finished) mouseCoordinator.ShowMouseNotification(nextVal);
         }
 
@@ -107,11 +115,12 @@ namespace WindowsFormsApp1
         public void OnUserPaused(bool paused)
         {
             Console.WriteLine("on user paused");
+            mouseCoordinator.ShowUserPausedNotif(paused);
+            if (!AppForm.TextToSpeech) return;
             if(paused)
                 textToSpeech.SayBtn(UserCommandsListener.PAUSED);
             else
                 textToSpeech.SayBtn(UserCommandsListener.CONTINUED);
-            mouseCoordinator.ShowUserPausedNotif(paused);
         }
 
 
@@ -176,6 +185,8 @@ namespace WindowsFormsApp1
 
         public void OnAllNodesSet()
         {
+            if (exitCalled) return;
+            exitCalled = true;
             Console.WriteLine("ion all nodes sat");
             OnExit();
         }
@@ -183,14 +194,15 @@ namespace WindowsFormsApp1
         public void OnExit()
         {
             //keyboardMouseSimulator.releaseCtrl();
+
             ClipboardWatcher.Stop();
             KeyboardWatcher.Stop();
             MouseWatcher.Stop();
             Console.WriteLine("done!");
             RegistryHandler.DisableWindowsErrorReporting(false);
+            textToSpeech.SayBtn(textToSpeech.EXIT_MSG);
             Application.Exit();
             Environment.Exit(1);
-            return;
         }
 
         public void OnBackToMainScreenError()

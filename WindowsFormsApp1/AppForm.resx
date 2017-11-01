@@ -123,7 +123,4 @@
   <metadata name="remotePicDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>148, 17</value>
   </metadata>
-  <data name="AppCoordinator_WaitForRightClickOnBar_on_wait_for_right_click" xml:space="preserve">
-    <value>on wait for right click</value>
-  </data>
 </root>

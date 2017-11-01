@@ -10,6 +10,7 @@ namespace WindowsFormsApp1.project.ghost.screenhelpers.colorchecker
     class TextToSpeechHelper
     {
         private SpeechSynthesizer speechSynthesizerObj;
+        public string EXIT_MSG = "haha! daba daba dab dab!";
 
         public TextToSpeechHelper()
         {

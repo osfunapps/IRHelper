@@ -47,13 +47,14 @@ namespace WindowsFormsApp1
             this.pauseBtnCB = new System.Windows.Forms.ComboBox();
             this.logBtn = new System.Windows.Forms.LinkLabel();
             this.actionsBtn = new System.Windows.Forms.LinkLabel();
+            this.textToSpeechCB = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.cyclesWaitScroller)).BeginInit();
             this.SuspendLayout();
             // 
             // goBtn
             // 
             this.goBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.goBtn.Location = new System.Drawing.Point(202, 168);
+            this.goBtn.Location = new System.Drawing.Point(202, 199);
             this.goBtn.Name = "goBtn";
             this.goBtn.Size = new System.Drawing.Size(100, 51);
             this.goBtn.TabIndex = 0;
@@ -90,7 +91,7 @@ namespace WindowsFormsApp1
             this.evenGohstPathTB.Name = "evenGohstPathTB";
             this.evenGohstPathTB.Size = new System.Drawing.Size(268, 20);
             this.evenGohstPathTB.TabIndex = 3;
-            this.evenGohstPathTB.Text = "C:\\Users\\"+ Environment.UserName+"\\Desktop\\ghostKill.bat";
+            this.evenGohstPathTB.TextChanged += new System.EventHandler(this.evenGohstPathTB_TextChanged);
             this.evenGohstPathTB.DragDrop += new System.Windows.Forms.DragEventHandler(this.EventGohstPathDropHandler);
             this.evenGohstPathTB.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterHandler);
             // 
@@ -139,7 +140,7 @@ namespace WindowsFormsApp1
             // startOverCB
             // 
             this.startOverCB.AutoSize = true;
-            this.startOverCB.Location = new System.Drawing.Point(12, 205);
+            this.startOverCB.Location = new System.Drawing.Point(12, 199);
             this.startOverCB.Name = "startOverCB";
             this.startOverCB.Size = new System.Drawing.Size(142, 17);
             this.startOverCB.TabIndex = 7;
@@ -186,7 +187,7 @@ namespace WindowsFormsApp1
             // logBtn
             // 
             this.logBtn.AutoSize = true;
-            this.logBtn.Location = new System.Drawing.Point(435, 209);
+            this.logBtn.Location = new System.Drawing.Point(435, 237);
             this.logBtn.Name = "logBtn";
             this.logBtn.Size = new System.Drawing.Size(29, 13);
             this.logBtn.TabIndex = 18;
@@ -205,11 +206,23 @@ namespace WindowsFormsApp1
             this.actionsBtn.Text = "Actions";
             this.actionsBtn.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ActionsBtn_LinkClicked);
             // 
+            // textToSpeechCB
+            // 
+            this.textToSpeechCB.AutoSize = true;
+            this.textToSpeechCB.Location = new System.Drawing.Point(12, 229);
+            this.textToSpeechCB.Name = "textToSpeechCB";
+            this.textToSpeechCB.Size = new System.Drawing.Size(103, 17);
+            this.textToSpeechCB.TabIndex = 24;
+            this.textToSpeechCB.Text = "Text To Speech";
+            this.textToSpeechCB.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.textToSpeechCB.UseVisualStyleBackColor = true;
+            // 
             // AppForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(476, 231);
+            this.ClientSize = new System.Drawing.Size(476, 265);
+            this.Controls.Add(this.textToSpeechCB);
             this.Controls.Add(this.actionsBtn);
             this.Controls.Add(this.logBtn);
             this.Controls.Add(this.label4);
@@ -258,5 +271,6 @@ namespace WindowsFormsApp1
         private ComboBox pauseBtnCB;
         private LinkLabel logBtn;
         private LinkLabel actionsBtn;
+        private CheckBox textToSpeechCB;
     }
 }

@@ -87,6 +87,7 @@
     <Compile Include="project\ghost\errors\RecordWindowErrorHandler.cs" />
     <Compile Include="project\ghost\xml\XmlExistingValuesWorker.cs" />
     <Compile Include="project\Logger.cs" />
+    <Compile Include="project\tools\UserSettings.cs" />
     <Compile Include="project\window\ExeWindowTitleReader.cs" />
     <Compile Include="project\window\ProgramExe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -124,6 +125,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="release\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

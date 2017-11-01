@@ -17,7 +17,7 @@ namespace WindowsFormsApp2.project.mouse
 
         //params
         private string ESC_KEY = "Escape";
-        private int CLICK_SAFETY_WAIT_MILLIS = 500;
+        private int CLICK_SAFETY_WAIT_MILLIS = 2000;
         private string WAVE_BTN = "Oem3";
 
         //instances

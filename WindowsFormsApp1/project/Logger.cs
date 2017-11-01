@@ -14,8 +14,11 @@ namespace WindowsFormsApp1.project
         {
             return "NOTICE: change EventGhost.exe to 8bit (256 color) and 'vista mode' for max performance!" +
                    "\n\nVersion 1.5:" +
+                   "\n- fixed paused and next buttons" +
+                   "\n- fixed commands listin duration" +
+                   "\n- user settings will now be saved" +
                    "\n- fixed short cooldown on program init" +
-                   "\n- added text to speech" +
+                   "\n- added text to speech + enable button" +
                    "\n\nVersion 1.4" +
                    "\n- fixed an error regarding the ESC button functionality" +
                    "\n- now the computer user account will be identified automatically on startup. Place ghostKill.bat in the desktop for the program to run" +
