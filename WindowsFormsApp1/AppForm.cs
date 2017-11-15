@@ -92,7 +92,11 @@ namespace WindowsFormsApp1
 
         //dialog clicks
         private void RemotePicDialog_FileOk(object sender, CancelEventArgs e){evenGohstPathTB.Text = TitleExporter(sender.ToString());}
-        private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e){xmlPathTB.Text = TitleExporter(sender.ToString());}
+
+        private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            xmlPathTB.Text = TitleExporter(sender.ToString());
+        }
 
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
