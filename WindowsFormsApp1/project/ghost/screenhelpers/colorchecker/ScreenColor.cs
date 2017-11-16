@@ -17,7 +17,6 @@ namespace WindowsFormsApp2.project.mouse
 
         public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
 
-
         internal Color FindOnScreenColor(Point point)
         {
 
