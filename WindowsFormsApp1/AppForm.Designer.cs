@@ -48,13 +48,15 @@ namespace WindowsFormsApp1
             this.logBtn = new System.Windows.Forms.LinkLabel();
             this.actionsBtn = new System.Windows.Forms.LinkLabel();
             this.textToSpeechCB = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.undoBtnCB = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.cyclesWaitScroller)).BeginInit();
             this.SuspendLayout();
             // 
             // goBtn
             // 
             this.goBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.goBtn.Location = new System.Drawing.Point(202, 199);
+            this.goBtn.Location = new System.Drawing.Point(202, 240);
             this.goBtn.Name = "goBtn";
             this.goBtn.Size = new System.Drawing.Size(100, 51);
             this.goBtn.TabIndex = 0;
@@ -140,7 +142,7 @@ namespace WindowsFormsApp1
             // startOverCB
             // 
             this.startOverCB.AutoSize = true;
-            this.startOverCB.Location = new System.Drawing.Point(12, 199);
+            this.startOverCB.Location = new System.Drawing.Point(12, 240);
             this.startOverCB.Name = "startOverCB";
             this.startOverCB.Size = new System.Drawing.Size(142, 17);
             this.startOverCB.TabIndex = 7;
@@ -183,11 +185,12 @@ namespace WindowsFormsApp1
             this.pauseBtnCB.Size = new System.Drawing.Size(222, 21);
             this.pauseBtnCB.Sorted = true;
             this.pauseBtnCB.TabIndex = 15;
+            this.pauseBtnCB.SelectedIndexChanged += new System.EventHandler(this.pauseBtnCB_SelectedIndexChanged);
             // 
             // logBtn
             // 
             this.logBtn.AutoSize = true;
-            this.logBtn.Location = new System.Drawing.Point(435, 237);
+            this.logBtn.Location = new System.Drawing.Point(435, 278);
             this.logBtn.Name = "logBtn";
             this.logBtn.Size = new System.Drawing.Size(29, 13);
             this.logBtn.TabIndex = 18;
@@ -198,7 +201,7 @@ namespace WindowsFormsApp1
             // actionsBtn
             // 
             this.actionsBtn.AutoSize = true;
-            this.actionsBtn.Location = new System.Drawing.Point(12, 168);
+            this.actionsBtn.Location = new System.Drawing.Point(12, 209);
             this.actionsBtn.Name = "actionsBtn";
             this.actionsBtn.Size = new System.Drawing.Size(42, 13);
             this.actionsBtn.TabIndex = 23;
@@ -209,7 +212,7 @@ namespace WindowsFormsApp1
             // textToSpeechCB
             // 
             this.textToSpeechCB.AutoSize = true;
-            this.textToSpeechCB.Location = new System.Drawing.Point(12, 229);
+            this.textToSpeechCB.Location = new System.Drawing.Point(12, 270);
             this.textToSpeechCB.Name = "textToSpeechCB";
             this.textToSpeechCB.Size = new System.Drawing.Size(103, 17);
             this.textToSpeechCB.TabIndex = 24;
@@ -217,11 +220,32 @@ namespace WindowsFormsApp1
             this.textToSpeechCB.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.textToSpeechCB.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 161);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(92, 13);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "With Undo Button";
+            // 
+            // undoBtnCB
+            // 
+            this.undoBtnCB.DisplayMember = "Space";
+            this.undoBtnCB.FormattingEnabled = true;
+            this.undoBtnCB.Location = new System.Drawing.Point(142, 158);
+            this.undoBtnCB.Name = "undoBtnCB";
+            this.undoBtnCB.Size = new System.Drawing.Size(222, 21);
+            this.undoBtnCB.Sorted = true;
+            this.undoBtnCB.TabIndex = 25;
+            // 
             // AppForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(476, 265);
+            this.ClientSize = new System.Drawing.Size(476, 320);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.undoBtnCB);
             this.Controls.Add(this.textToSpeechCB);
             this.Controls.Add(this.actionsBtn);
             this.Controls.Add(this.logBtn);
@@ -272,5 +296,7 @@ namespace WindowsFormsApp1
         private LinkLabel logBtn;
         private LinkLabel actionsBtn;
         private CheckBox textToSpeechCB;
+        private Label label3;
+        private ComboBox undoBtnCB;
     }
 }

@@ -40,8 +40,8 @@ namespace WindowsFormsApp2.project.mouse
                     screenColorIdentifierCallback.OnRecordBarRaised();
                     return;
                 }
-
             }
+
         }
 
 

@@ -51,7 +51,6 @@ namespace LayoutProject.program
 
         internal void SetNextNodeVal(string nextNodeVal)
         {
-
             keysNodesList[nodeIdx].InnerText = nextNodeVal;
             xmlDocument.Save(xmlPath);
             nodeIdx++;
@@ -108,5 +107,10 @@ namespace LayoutProject.program
             void OnNodeValSet();
         }
 
+        public void ClearPreviousVal()
+        {
+            if(nodeIdx==0)return;
+            nodeIdx--;
+        }
     }
 }

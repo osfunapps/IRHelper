@@ -13,9 +13,9 @@ namespace WindowsFormsApp1.program.valuesparser
 {
     public partial class FloatingMouseWindow : Form
     {
-        private float MOUSE_TXT_SIZE = 20f;
-        private int WINDOW_WIDTH = 200;
-        private int WINDOW_FRAME_Y_OFFSET = 60;
+        private float MOUSE_TXT_SIZE = 25f;
+        private int WINDOW_WIDTH = 350;
+        private int WINDOW_FRAME_Y_OFFSET = 70;
 
 
 

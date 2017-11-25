@@ -46,5 +46,41 @@ namespace WindowsFormsApp1.Properties {
                 this["eventGhostPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string xmlPath {
+            get {
+                return ((string)(this["xmlPath"]));
+            }
+            set {
+                this["xmlPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string undoBtn {
+            get {
+                return ((string)(this["undoBtn"]));
+            }
+            set {
+                this["undoBtn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pauseBtn {
+            get {
+                return ((string)(this["pauseBtn"]));
+            }
+            set {
+                this["pauseBtn"] = value;
+            }
+        }
     }
 }

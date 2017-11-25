@@ -42,7 +42,10 @@ namespace WindowsFormsApp2.project.mouse
             KeyboardWatcher.Start();
             SetKeyboardListener();
             isAllowedToReadPixel = true;
-            LookForAColor().Start();
+
+            Console.WriteLine("is thread alive? "+ LookForAColor().IsAlive);
+            if (!LookForAColor().IsAlive)
+                LookForAColor().Start();
         }
 
         private void SetKeyboardListener()
@@ -56,6 +59,13 @@ namespace WindowsFormsApp2.project.mouse
                     userCommandsListener.OnExit();
                     return;
                 }
+
+                if (ClickedOnUndoBtn(e) && ClickLegal())
+                {
+                    lastTimeClicked = TimeUtils.CurrentTimeMillis();
+                    userCommandsListener.OnUndo();
+                }
+
 
                 if (ClickedOnSkipBtn(e) && ClickLegal())
                 {
@@ -94,6 +104,11 @@ namespace WindowsFormsApp2.project.mouse
 
             };
 
+        }
+
+        private bool ClickedOnUndoBtn(KeyInputEventArgs e)
+        {
+            return e.KeyData.Keyname.Equals(AppForm.undoBtn) && e.KeyData.EventType.Equals(EventHook.KeyEvent.up);
         }
 
         private bool WindowClosed()
@@ -150,6 +165,7 @@ namespace WindowsFormsApp2.project.mouse
         void OnUserSkipped();
         void OnUserPaused(bool paused);
         void OnBackToMainScreenError();
+        void OnUndo();
     }
 
 

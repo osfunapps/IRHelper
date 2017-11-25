@@ -57,7 +57,6 @@ namespace WindowsFormsApp1
             mouseCoordinator.ShowMouseNotification(MouseCoordinator.FIRST_MOUSE_NOTIF);
             programExe.RunGohstExeNoCallback();
             mouseEventListener.AskForRightClickOnBar();
-
         }
 
         public void OnRightClickOnBar(int x, int y)
@@ -100,6 +99,15 @@ namespace WindowsFormsApp1
                 textToSpeech.SayBtn(nextNodeName);
             });
         }
+
+        public void OnUndo()
+        {
+            xmlModifier.ClearPreviousVal();
+            var nextNodeName = xmlModifier.GetNextValName();
+            mouseCoordinator.ShowMouseNotification(nextNodeName);
+            HandleTextToSpeech(nextNodeName);
+        }
+
 
         public void OnUserSkipped()
         {
@@ -188,6 +196,8 @@ namespace WindowsFormsApp1
             if (exitCalled) return;
             exitCalled = true;
             Console.WriteLine("ion all nodes sat");
+            if(AppForm.TextToSpeech)
+                textToSpeech.SayBtn(textToSpeech.EXIT_MSG);
             OnExit();
         }
 
@@ -200,7 +210,6 @@ namespace WindowsFormsApp1
             MouseWatcher.Stop();
             Console.WriteLine("done!");
             RegistryHandler.DisableWindowsErrorReporting(false);
-            textToSpeech.SayBtn(textToSpeech.EXIT_MSG);
             Application.Exit();
             Environment.Exit(1);
         }
@@ -210,5 +219,7 @@ namespace WindowsFormsApp1
             Console.WriteLine("onb back to main screen errr");
             ClickOnEventGohstReset();
         }
+
+     
     }
 }

@@ -14,6 +14,7 @@ using System.Xml;
 using WindowsFormsApp1.program.tools;
 using WindowsFormsApp1.project;
 using WindowsFormsApp1.project.ghost;
+using WindowsFormsApp1.Properties;
 using Remotes_App_Translation_Project.tools;
 
 namespace WindowsFormsApp1
@@ -30,7 +31,7 @@ namespace WindowsFormsApp1
         internal static int cyclesToWait;
         private static string userPauseBtnName;
         private static bool textToSpeech;
-
+        public static string undoBtn;
 
         public AppForm()
         {
@@ -43,10 +44,24 @@ namespace WindowsFormsApp1
 
         private void LoadPrefs()
         {
-            textToSpeechCB.Checked = UserSettings.getIntance().GetTxtToSpeech();
-            evenGohstPathTB.Text = UserSettings.getIntance().GetEventGhostPath();
+            evenGohstPathTB.Text =  Settings.Default.eventGhostPath;
+            textToSpeechCB.Checked = Settings.Default.textToSpeech;
+            xmlPathTB.Text = Settings.Default.xmlPath;
+            undoBtnCB.Text = Settings.Default.undoBtn;
+            pauseBtnCB.Text = Settings.Default.pauseBtn;
         }
 
+        private void SaveSettings()
+        {
+            Settings.Default.Upgrade();
+            Settings.Default.eventGhostPath = evenGohstPathTB.Text;
+            Settings.Default.textToSpeech = textToSpeech;
+            Settings.Default.xmlPath = xmlPathTB.Text;
+            Settings.Default.undoBtn = undoBtnCB.Text;
+            Settings.Default.pauseBtn = pauseBtnCB.Text;
+            Settings.Default.Save();
+
+        }
 
         private void SetInstances()
         {
@@ -55,6 +70,7 @@ namespace WindowsFormsApp1
 
         private void Go_Clicked(object sender, EventArgs e)
         {
+            undoBtn = undoBtnCB.Text;
             userPauseBtnName = pauseBtnCB.SelectedItem.ToString();
             cyclesToWait = cyclesWaitScroller.Value;
             startOver = startOverCB.Checked;
@@ -62,11 +78,13 @@ namespace WindowsFormsApp1
             xmlPathStr = xmlPathTB.Text;
             eventGohstPath = evenGohstPathTB.Text;
             RegistryHandler.DisableWindowsErrorReporting(true);
-            UserSettings.getIntance().SaveSettings(evenGohstPathTB.Text, textToSpeechCB.Checked);
+            SaveSettings();
             textToSpeech = textToSpeechCB.Checked;
             appCoordinator.WaitForRightClickOnBar();
 
         }
+
+     
 
         internal static string GetXmlPath()
         {
@@ -107,8 +125,10 @@ namespace WindowsFormsApp1
 
         protected void SetCBItems()
         {
-            foreach (string btnName in Enum.GetNames(typeof(VirtualKeyCode)))
+            foreach (string btnName in Enum.GetNames(typeof(VirtualKeyCode))) { 
                 this.pauseBtnCB.Items.Add(btnName);
+                this.undoBtnCB.Items.Add(btnName);
+            }
 
             pauseBtnCB.SelectedItem = VirtualKeyCode.LeftShift.ToString();
         }
@@ -152,6 +172,11 @@ namespace WindowsFormsApp1
         {
             get => textToSpeech;
             set => textToSpeech = value;
+        }
+
+        private void pauseBtnCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

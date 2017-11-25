@@ -19,23 +19,10 @@ namespace Remotes_App_Translation_Project.tools
             return new UserSettings();
         }
 
-        public void SaveSettings(string eventGhostPath, bool textToSpeech)
+        public void SaveSettings(string eventGhostPath, bool textToSpeech, string xmlPath, string undoBtnCB)
         {
-            Settings.Default.Upgrade();
-            Settings.Default.eventGhostPath = eventGhostPath;
-            Settings.Default.textToSpeech = textToSpeech;
-            Settings.Default.Save();
         }
 
-        public bool GetTxtToSpeech()
-        {
-            return Settings.Default.textToSpeech;
-        }
-
-        public string GetEventGhostPath()
-        {
-            return Settings.Default.eventGhostPath;
-        }
 
         
     }

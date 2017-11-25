@@ -32,7 +32,7 @@ namespace WindowsFormsApp1.project.ghost
                 
             }
 
-            Thread.Sleep(800);
+            Thread.Sleep(2000);
             programExeCallback.OnGhostWindowOpenAndFocused();
 
             //System.Diagnostics.Process.Start(PathsClass.getGhostPath());
@@ -43,7 +43,7 @@ namespace WindowsFormsApp1.project.ghost
             return ExeWindowTitleReader.GetActiveWindowTitle().Contains(TITLE_WINDOW_EVENT_GOHST);
         }
 
-
+        
         public interface IProgramExeCallback
         {
             void OnGhostWindowOpenAndFocused();
