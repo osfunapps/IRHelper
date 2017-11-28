@@ -13,7 +13,9 @@ namespace WindowsFormsApp1.project
         internal static string GetTxt()
         {
             return "NOTICE: change EventGhost.exe to 8bit (256 color) and 'vista mode' for max performance!" +
-                   "\n\nVersion 1.5:" +
+                   "Version 1.6:" +
+                   "\n- degree above window fixed" +
+                   "\nVersion 1.5:" +
                    "\n- fixed paused and next buttons" +
                    "\n- fixed commands listin duration" +
                    "\n- user settings will now be saved" +
