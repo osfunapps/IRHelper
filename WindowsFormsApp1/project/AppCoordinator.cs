@@ -3,6 +3,7 @@ using LayoutProject.program;
 using LayoutProject.program.values;
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1.program.valuesparser;
@@ -32,9 +33,11 @@ namespace WindowsFormsApp1
         private UserCommandsListener userCommandsListener;
         private TextToSpeechHelper textToSpeech;
         private bool exitCalled;
+        private AppForm _appForm;
 
-        public AppCoordinator()
+        public AppCoordinator(AppForm appForm)
         {
+            _appForm = appForm;
             keyboardMouseSimulator = new KeyboardMouseSimulator(this);
             cursorIconManager = new CursorIconManager(this);
             xmlModifier = new XMLModifier(this);
@@ -53,14 +56,16 @@ namespace WindowsFormsApp1
             xmlModifier.ReadXMLPath(AppForm.GetXmlPath());
 
             //show mouse dialog
+            programExe.RunGohstExeNoCallback();
             mouseCoordinator.ShowDialog();
             mouseCoordinator.ShowMouseNotification(MouseCoordinator.FIRST_MOUSE_NOTIF);
-            programExe.RunGohstExeNoCallback();
             mouseEventListener.AskForRightClickOnBar();
+            //mouseCoordinator.ShowForm();
         }
 
         public void OnRightClickOnBar(int x, int y)
         {
+
             Console.WriteLine("on right click on bar");
             SetMousePoint(new Point(x, y));
             ClickOnEventGohstReset();

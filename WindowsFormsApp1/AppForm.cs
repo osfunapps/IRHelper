@@ -65,7 +65,7 @@ namespace WindowsFormsApp1
 
         private void SetInstances()
         {
-            appCoordinator = new AppCoordinator();
+            appCoordinator = new AppCoordinator(this);
         }
 
         private void Go_Clicked(object sender, EventArgs e)

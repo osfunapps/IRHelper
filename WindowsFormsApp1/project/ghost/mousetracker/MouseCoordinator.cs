@@ -26,10 +26,17 @@ namespace LayoutProject.program.values
         private TextToSpeechHelper textToSpeech;
 
 
+        public void ShowForm()
+        {
+          /*  floatingMouseWindowForm.TopMost = true;
+            floatingMouseWindowForm.BringToFront();
+       */ }
+
         public MouseCoordinator()
         {
             floatingMouseWindowForm = new FloatingMouseWindow();
             floatingMouseWindowForm.TopMost = true;
+            floatingMouseWindowForm.BringToFront();
         }
 
 
@@ -40,8 +47,11 @@ namespace LayoutProject.program.values
 
         public void ShowDialog()
         {
+            Thread.Sleep(3200);
             Task t = Task.Run(() => {
                 floatingMouseWindowForm.ShowDialog();
+                floatingMouseWindowForm.BringToFront();
+                floatingMouseWindowForm.TopMost = true;
             });
             
         }
