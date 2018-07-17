@@ -24,7 +24,7 @@ namespace LayoutProject.program
         //nodes list 
         private XmlNodeList keysNodesList;
         private int nodeIdx;
-        private string xmlPath;
+        public static string xmlPath;
         private XmlNode papaKeyNode;
 
         public XMLModifier(IXMLModifierCallback callback)
@@ -35,7 +35,7 @@ namespace LayoutProject.program
 
         internal void ReadXMLPath(string xmlPath)
         {
-            this.xmlPath = xmlPath;
+            XMLModifier.xmlPath = xmlPath;
             xmlDocument = new XmlDocument();
             xmlDocument.Load(@xmlPath);
             papaKeyNode = xmlDocument.GetElementsByTagName(ATT_KEYS)[0];
@@ -57,7 +57,7 @@ namespace LayoutProject.program
 
             if (nodeIdx == keysNodesList.Count)
             {
-                xmlReaderCallback.OnAllNodesSet();
+                xmlReaderCallback.OnAllNodesSet(xmlDocument);
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace LayoutProject.program
 
             if (nodeIdx == keysNodesList.Count)
             {
-                xmlReaderCallback.OnAllNodesSet();
+                xmlReaderCallback.OnAllNodesSet(xmlDocument);
                 return true;
             }
 
@@ -103,7 +103,7 @@ namespace LayoutProject.program
 
         public interface IXMLModifierCallback
         {
-            void OnAllNodesSet();
+            void OnAllNodesSet(XmlDocument document);
             void OnNodeValSet();
         }
 

@@ -86,7 +86,19 @@
     <Compile Include="project\ghost\inputssimulator\KeyboardMouseSimulator.cs" />
     <Compile Include="project\ghost\errors\RecordWindowErrorHandler.cs" />
     <Compile Include="project\ghost\xml\XmlExistingValuesWorker.cs" />
+    <Compile Include="project\hexwindow\HexWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="project\hexwindow\HexWindow.Designer.cs">
+      <DependentUpon>HexWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="project\hexwindow\NoAutoScrollRTB.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="project\Logger.cs" />
+    <Compile Include="project\newnewnew\HexListener.cs" />
+    <Compile Include="project\newnewnew\JavaKiller.cs" />
+    <Compile Include="project\tools\NodesValidator.cs" />
     <Compile Include="project\tools\UserSettings.cs" />
     <Compile Include="project\window\ExeWindowTitleReader.cs" />
     <Compile Include="project\window\ProgramExe.cs" />
@@ -100,6 +112,9 @@
       <DependentUpon>AppForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="project\ghost\mousetracker\FloatingMouseWindow.resx" />
+    <EmbeddedResource Include="project\hexwindow\HexWindow.resx">
+      <DependentUpon>HexWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

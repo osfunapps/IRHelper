@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -72,6 +73,11 @@ namespace LayoutProject.program.values
             {
                 ShowMouseNotification(previousBtnTxt);
             }
+        }
+
+        public void SetMouseNotificationColor(Color color)
+        {
+            floatingMouseWindowForm.SetMouseNotificationColor(color);
         }
     }
 }

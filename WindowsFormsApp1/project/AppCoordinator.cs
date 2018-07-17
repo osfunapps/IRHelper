@@ -6,10 +6,13 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using WindowsFormsApp1.program.valuesparser;
 using WindowsFormsApp1.project.ghost;
 using WindowsFormsApp1.project.ghost.mouselistener;
 using WindowsFormsApp1.project.ghost.screenhelpers.colorchecker;
+using WindowsFormsApp1.project.hexwindow;
+using WindowsFormsApp1.project.newnewnew;
 using WindowsFormsApp2.project.mouse;
 using static LayoutProject.program.XMLModifier;
 using static WindowsFormsApp1.project.ghost.mouselistener.MouseEventListener;
@@ -19,7 +22,7 @@ using static WindowsFormsApp2.project.mouse.ScreenColorManager;
 
 namespace WindowsFormsApp1
 {
-    internal class AppCoordinator : IProgramExeCallback, IOnInputSimulateCallback, ICursorIconCallback, IXMLModifierCallback, IFindMouseBarPositionCallback, IRecordWindowCallback, IUserCommandsListener
+    internal class AppCoordinator : IProgramExeCallback, IOnInputSimulateCallback, ICursorIconCallback, IXMLModifierCallback, IFindMouseBarPositionCallback, IRecordWindowCallback, IUserCommandsListener, IHexListenerCallback
     {
 
         //instances
@@ -29,11 +32,15 @@ namespace WindowsFormsApp1
         private XMLModifier xmlModifier;
         private MouseCoordinator mouseCoordinator;
         private RecordWindowErrorHandler recordWindowErrorHandler;
-        private ProgramExe programExe;
+        private HexListener hexListener;
         private UserCommandsListener userCommandsListener;
         private TextToSpeechHelper textToSpeech;
         private bool exitCalled;
         private AppForm _appForm;
+        private Task readHexTask;
+        private JavaKiller javaKiller;
+        private HexWindow hexWindow;
+        private string nextNodeName;
 
         public AppCoordinator(AppForm appForm)
         {
@@ -41,65 +48,105 @@ namespace WindowsFormsApp1
             keyboardMouseSimulator = new KeyboardMouseSimulator(this);
             cursorIconManager = new CursorIconManager(this);
             xmlModifier = new XMLModifier(this);
-            programExe = new ProgramExe();
+            hexListener = new HexListener(this);
             userCommandsListener = new UserCommandsListener(this);
             mouseEventListener = new MouseEventListener(this);
             mouseCoordinator = new MouseCoordinator();
             recordWindowErrorHandler = new RecordWindowErrorHandler(this);
             this.textToSpeech = new TextToSpeechHelper();
+            javaKiller = new JavaKiller();
+            hexWindow = new HexWindow();
         }
 
-        internal void WaitForRightClickOnBar()
+        internal void StartSequence()
         {
-            Console.WriteLine("on wait for right click");
-            //todo: currently not doing anything with the x and y positions of the green bar
-            xmlModifier.ReadXMLPath(AppForm.GetXmlPath());
+            javaKiller.KillAllJavaProcessess();
+            hexWindow.Show();
+
 
             //show mouse dialog
-            programExe.RunGohstExeNoCallback();
             mouseCoordinator.ShowDialog();
-            mouseCoordinator.ShowMouseNotification(MouseCoordinator.FIRST_MOUSE_NOTIF);
-            mouseEventListener.AskForRightClickOnBar();
-            //mouseCoordinator.ShowForm();
+
+            hexListener.OpenHexListener();
+            ReadXmlPath();
         }
 
-        public void OnRightClickOnBar(int x, int y)
+        private void ReadXmlPath()
         {
-
-            Console.WriteLine("on right click on bar");
-            SetMousePoint(new Point(x, y));
-            ClickOnEventGohstReset();
+            xmlModifier.ReadXMLPath(AppForm.GetXmlPath());
+            PrepareForNextHex();
         }
 
-        public void ClickOnEventGohstReset()
+
+        public void PrepareForNextHex()
         {
-            Console.WriteLine("on click on event gohst reset");
-            programExe.RunGohstExe(this);
-        }
-
-        public void OnGhostWindowOpenAndFocused(){
-            Console.WriteLine("on gohst window opened and focused");
-            keyboardMouseSimulator.Select_USB_UIRT_InMenu();
-        }
-
-        public void On_USBUIRT_ItemSelected()
-        {
-            Console.WriteLine("on item selected");
-            keyboardMouseSimulator.ClickOnLearnIrCode();
-        }
-
-        public void OnLearnIrCodeClicked()
-        {
-            Console.WriteLine("on learn ir clicked");
-            var nextNodeName = xmlModifier.GetNextValName();
+            nextNodeName = xmlModifier.GetNextValName();
             mouseCoordinator.ShowMouseNotification(nextNodeName);
             HandleTextToSpeech(nextNodeName);
-            userCommandsListener.ListinToUserCommands();
+            //userCommandsListener.ListinToUserCommands();
+            readHexTask = Task.Run(() =>
+            {
+                hexListener.ListenToHex();
+            });
+
+        }
+
+        public void OnHexReturned(string hexCode)
+        {
+            mouseCoordinator.SetMouseNotificationColor(FloatingMouseWindow.MOUSE_NOTIFICATION_ON_COLOR);
+            hexWindow.SetKeyAndHex(nextNodeName, hexCode);
+            Thread.Sleep(1200);
+            mouseCoordinator.SetMouseNotificationColor(FloatingMouseWindow.MOUSE_NOTIFICATION_IDLE_COLOR);
+            xmlModifier.SetNextNodeVal(hexCode);
+        }
+
+        public void OnNodeValSet()
+        {
+            Console.WriteLine("on node val ssat");
+            PrepareForNextHex();
+        }
+
+
+        public void OnAllNodesSet(XmlDocument document)
+        {
+            NodesValidator nodesValidator = new NodesValidator();
+            if (nodesValidator.AreAllNodesValidated(document))
+                OnAllNodesValidated();
+            else
+                ReadXmlPath();
+        }
+
+        public void OnAllNodesValidated()
+        {
+            if (exitCalled) return;
+            exitCalled = true;
+            Console.WriteLine("ion all nodes sat");
+            if (AppForm.TextToSpeech)
+                textToSpeech.SayBtn(textToSpeech.EXIT_MSG);
+            hexListener.KillListener();
+            OnExit();
+        }
+
+        public void OnExit()
+        {
+            //keyboardMouseSimulator.releaseCtrl();
+
+            ClipboardWatcher.Stop();
+            KeyboardWatcher.Stop();
+            MouseWatcher.Stop();
+            Console.WriteLine("done!");
+            RegistryHandler.DisableWindowsErrorReporting(false);
+            Application.Exit();
+            Environment.Exit(1);
+        }
+
+        public void OnBackToMainScreenError()
+        {
         }
 
         private void HandleTextToSpeech(string nextNodeName)
         {
-            if(!AppForm.TextToSpeech)return;
+            if (!AppForm.TextToSpeech) return;
             Task t = Task.Run(() => {
                 textToSpeech.SayBtn(nextNodeName);
             });
@@ -119,7 +166,7 @@ namespace WindowsFormsApp1
             Console.WriteLine("on user skipped");
             var finished = xmlModifier.SkipNextValAndFinish();
             var nextVal = xmlModifier.GetNextValName();
-            if(AppForm.TextToSpeech)
+            if (AppForm.TextToSpeech)
                 textToSpeech.SayBtn(nextVal);
             if (!finished) mouseCoordinator.ShowMouseNotification(nextVal);
         }
@@ -130,101 +177,12 @@ namespace WindowsFormsApp1
             Console.WriteLine("on user paused");
             mouseCoordinator.ShowUserPausedNotif(paused);
             if (!AppForm.TextToSpeech) return;
-            if(paused)
+            if (paused)
                 textToSpeech.SayBtn(UserCommandsListener.PAUSED);
             else
                 textToSpeech.SayBtn(UserCommandsListener.CONTINUED);
         }
 
 
-        public void OnRecordBarRaised()
-        {
-            Console.WriteLine("on record raised");
-            keyboardMouseSimulator.CloseRecordWindow();
-        }
-
-
-        public void OnTryingToCloseRecordWindow()
-        {
-            Console.WriteLine("on trying to close record windwo");
-            recordWindowErrorHandler.NotifySuccessfulClose();
-
-        }
-
-        public void OnRecordWindowClosed()
-        {
-            Console.WriteLine("onm record window closed");
-            //keyboardMouseSimulator.releaseCtrl();
-            cursorIconManager.NotifyWhenCursorChangedToBeam();
-        }
-
-        public void OnRecordWindowStillOpen()
-        {
-            Console.WriteLine("on record window still oipen");
-            recordWindowErrorHandler.CheckForClosingDialog();
-            ClickOnEventGohstReset();
-        }
-
-
-        public void OnCursorFrozenForAWhile()
-        {
-            Console.WriteLine("on cursed froze for a while");
-            keyboardMouseSimulator.CloseWindowsTryToFixWindow();
-            recordWindowErrorHandler.CheckForClosingDialog();
-            ClickOnEventGohstReset();
-        }
-
-
-        public void OnCursorChanged()
-        {
-            Console.WriteLine("on cureser changed");
-            keyboardMouseSimulator.CopyHexInBox();
-        }
-
-
-        public void OnCopyBoxDone(string txtCopied)
-        {
-            Console.WriteLine("on copy box done");
-            xmlModifier.SetNextNodeVal(txtCopied);
-        }
-
-        public void OnNodeValSet()
-        {
-            Console.WriteLine("on node val ssat");
-            keyboardMouseSimulator.ClickOnLearnIrCode();
-        }
-
-
-
-        public void OnAllNodesSet()
-        {
-            if (exitCalled) return;
-            exitCalled = true;
-            Console.WriteLine("ion all nodes sat");
-            if(AppForm.TextToSpeech)
-                textToSpeech.SayBtn(textToSpeech.EXIT_MSG);
-            OnExit();
-        }
-
-        public void OnExit()
-        {
-            //keyboardMouseSimulator.releaseCtrl();
-
-            ClipboardWatcher.Stop();
-            KeyboardWatcher.Stop();
-            MouseWatcher.Stop();
-            Console.WriteLine("done!");
-            RegistryHandler.DisableWindowsErrorReporting(false);
-            Application.Exit();
-            Environment.Exit(1);
-        }
-
-        public void OnBackToMainScreenError()
-        {
-            Console.WriteLine("onb back to main screen errr");
-            ClickOnEventGohstReset();
-        }
-
-     
     }
 }

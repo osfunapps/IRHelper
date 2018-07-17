@@ -31,7 +31,6 @@ namespace WindowsFormsApp1
                 cycles++;
 
                 if (cycles > MAX_CYCLES_TO_WAIT) { 
-                    recordWindowCallback.OnRecordWindowStillOpen();
                     return;
                 }
 
@@ -39,7 +38,6 @@ namespace WindowsFormsApp1
                 Thread.Sleep(TIME_BETWEEN_CYCLES);
             }
 
-            recordWindowCallback.OnRecordWindowClosed();
 
         }
 
@@ -71,7 +69,5 @@ namespace WindowsFormsApp1
 
     public interface IRecordWindowCallback
     {
-        void OnRecordWindowClosed();
-        void OnRecordWindowStillOpen();
     }
 }

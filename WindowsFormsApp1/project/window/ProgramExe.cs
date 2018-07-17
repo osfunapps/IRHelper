@@ -33,7 +33,6 @@ namespace WindowsFormsApp1.project.ghost
             }
 
             Thread.Sleep(2000);
-            programExeCallback.OnGhostWindowOpenAndFocused();
 
             //System.Diagnostics.Process.Start(PathsClass.getGhostPath());
         }
@@ -46,10 +45,9 @@ namespace WindowsFormsApp1.project.ghost
         
         public interface IProgramExeCallback
         {
-            void OnGhostWindowOpenAndFocused();
         }
 
-        internal void RunGohstExeNoCallback()
+        internal void RunHexListener()
         {
             System.Diagnostics.Process.Start(AppForm.GetEventGohstPath());
         }

@@ -24,7 +24,6 @@ namespace WindowsFormsApp1.project.ghost.mouselistener
             {
                 ExeWindowTitleReader.GetActiveWindowTitle();
                 if (e.Message == EventHook.Hooks.MouseMessages.WM_RBUTTONUP) { 
-                    findMouseBarPositionCallback.OnRightClickOnBar(e.Point.x, e.Point.y);
                     MouseWatcher.Stop();
                 }
             };
@@ -39,7 +38,6 @@ namespace WindowsFormsApp1.project.ghost.mouselistener
 
         public interface IFindMouseBarPositionCallback
         {
-            void OnRightClickOnBar(int x, int y);
         }
     }
 }

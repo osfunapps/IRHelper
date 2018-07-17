@@ -14,6 +14,9 @@ namespace WindowsFormsApp1.program.valuesparser
         private System.ComponentModel.IContainer components = null;
         UserActivityHook actHook;
 
+        public static Color MOUSE_NOTIFICATION_IDLE_COLOR = Color.Coral;
+        public static Color MOUSE_NOTIFICATION_ON_COLOR = Color.CornflowerBlue;
+
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -45,7 +48,7 @@ namespace WindowsFormsApp1.program.valuesparser
             // 
             this.mouseTxtLabel.AutoSize = true;
             this.mouseTxtLabel.Font = new System.Drawing.Font("Consolas", MOUSE_TXT_SIZE, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mouseTxtLabel.ForeColor = System.Drawing.Color.Coral;
+            this.mouseTxtLabel.ForeColor = MOUSE_NOTIFICATION_IDLE_COLOR;
             this.mouseTxtLabel.Location = new System.Drawing.Point(0, 0);
             this.mouseTxtLabel.Margin = new System.Windows.Forms.Padding(0);
             this.mouseTxtLabel.Name = "label1";
@@ -109,6 +112,11 @@ namespace WindowsFormsApp1.program.valuesparser
                 return;
             }
             this.mouseTxtLabel.Text = value;
+        }
+
+        public void SetMouseNotificationColor(Color color)
+        {
+            this.mouseTxtLabel.ForeColor = color;
         }
     }
 }

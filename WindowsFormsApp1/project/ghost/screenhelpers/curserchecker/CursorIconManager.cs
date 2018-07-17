@@ -31,13 +31,11 @@ namespace WindowsFormsApp2.project.mouse
                 cycles++;
                 Thread.Sleep(300);
                 if (cycles > AppForm.cyclesToWait) { 
-                    cursorIconCallback.OnCursorFrozenForAWhile();
                     return;
                 }
 
             }
 
-            cursorIconCallback.OnCursorChanged();
 
         }
 
@@ -48,8 +46,6 @@ namespace WindowsFormsApp2.project.mouse
 
         public interface ICursorIconCallback
         {
-            void OnCursorChanged();
-            void OnCursorFrozenForAWhile();
         }
     }
 }

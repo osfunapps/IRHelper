@@ -41,11 +41,6 @@ namespace WindowsFormsApp2.project.mouse
         {
             KeyboardWatcher.Start();
             SetKeyboardListener();
-            isAllowedToReadPixel = true;
-
-            Console.WriteLine("is thread alive? "+ LookForAColor().IsAlive);
-            if (!LookForAColor().IsAlive)
-                LookForAColor().Start();
         }
 
         private void SetKeyboardListener()
@@ -97,7 +92,6 @@ namespace WindowsFormsApp2.project.mouse
 
                 if (WindowClosed())
                 {
-                    userCommandsListener.OnBackToMainScreenError();
                     return;
 
                 }
@@ -148,7 +142,6 @@ namespace WindowsFormsApp2.project.mouse
         public void OnRecordBarRaised()
         {
             KeyboardWatcher.Stop();
-            userCommandsListener.OnRecordBarRaised();
         }
 
         //do not think anything about this method! it is useless!! 
@@ -161,10 +154,8 @@ namespace WindowsFormsApp2.project.mouse
     public interface IUserCommandsListener
     {
         void OnExit();
-        void OnRecordBarRaised();
         void OnUserSkipped();
         void OnUserPaused(bool paused);
-        void OnBackToMainScreenError();
         void OnUndo();
     }
 

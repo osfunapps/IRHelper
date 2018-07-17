@@ -70,7 +70,6 @@ namespace WindowsFormsApp1
         {
             if (!ExeWindowTitleReader.GetActiveWindowTitle().Equals(WINDOW_TITLE_LEARN_IR_CODE))
             {
-                onInputSimulateCallback.OnBackToMainScreenError();
                 return;
             }
 
@@ -78,7 +77,6 @@ namespace WindowsFormsApp1
             ActionSimulator.ClickOnBtn(VirtualKeyCode.TAB);
             ActionSimulator.ClickOnBtn(VirtualKeyCode.RETURN);
             //WaitForWindowTitle(WINDOW_TITLE_HEX_CODE, false, this);
-            onInputSimulateCallback.OnTryingToCloseRecordWindow();
         }
 
 
@@ -151,7 +149,6 @@ namespace WindowsFormsApp1
         {
             var hexCopied = Clipboard.GetText(TextDataFormat.Text);
             ClipboardWatcher.Stop();
-            onInputSimulateCallback.OnCopyBoxDone(hexCopied);
         }
 
         private void WaitForWindowTitle(string windowTitle, IWindowChangedListener windowChangedListener)
@@ -163,7 +160,6 @@ namespace WindowsFormsApp1
                 Thread.Sleep(250);
                 if (ExeWindowTitleReader.GetActiveWindowTitle() == null || CursorIcon.IsCursorType(Cursors.WaitCursor.Handle))
                 {
-                    onInputSimulateCallback.OnBackToMainScreenError();
                     return;
                 }
                 if (ExeWindowTitleReader.GetActiveWindowTitle().Equals(windowTitle))
@@ -179,36 +175,15 @@ namespace WindowsFormsApp1
         //public void OnWindowChanged(string currentWindowTitle, bool firstVisit)
         {
             //open hex code box
-            if (currentWindowTitle.Equals(WINDOW_TITLE_HEX_CODE))
             //if (currentWindowTitle.Equals(WINDOW_TITLE_HEX_CODE) && firstVisit)
-                onInputSimulateCallback.On_USBUIRT_ItemSelected();
 
             //open learn ir code
-            else if (currentWindowTitle.Equals(WINDOW_TITLE_LEARN_IR_CODE))
-                onInputSimulateCallback.OnLearnIrCodeClicked();
-
-            //close learn ir code and go back to hex box code
-/*            else if (currentWindowTitle.Equals(WINDOW_TITLE_HEX_CODE) && !firstVisit)
-                onInputSimulateCallback.OnTryingToCloseRecordWindow();
-                */
         }
     }
 
     public interface IOnInputSimulateCallback
     {
-        //1
-        void On_USBUIRT_ItemSelected();
-
-        //2
-        void OnLearnIrCodeClicked();
-
-        //3
-        void OnTryingToCloseRecordWindow();
-
-        //4
-        void OnCopyBoxDone(string txtCopied);
-        void OnBackToMainScreenError();
-    }
+        }
 
     internal interface IWindowChangedListener
     {

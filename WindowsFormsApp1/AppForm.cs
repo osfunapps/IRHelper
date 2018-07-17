@@ -80,7 +80,7 @@ namespace WindowsFormsApp1
             RegistryHandler.DisableWindowsErrorReporting(true);
             SaveSettings();
             textToSpeech = textToSpeechCB.Checked;
-            appCoordinator.WaitForRightClickOnBar();
+            appCoordinator.StartSequence();
 
         }
 

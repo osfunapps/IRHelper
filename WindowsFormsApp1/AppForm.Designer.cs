@@ -274,7 +274,7 @@ namespace WindowsFormsApp1
         private void onFormClosedHandler(object sender, FormClosedEventArgs e)
         {
             Console.WriteLine("closing!");
-            appCoordinator.OnAllNodesSet();
+            appCoordinator.OnAllNodesValidated();
         }
 
         #endregion
