@@ -31,21 +31,10 @@ namespace WindowsFormsApp1.project.hexwindow
         /// </summary>
         private void InitializeComponent()
         {
-            this.hexRTB = new System.Windows.Forms.RichTextBox();
             this.focusBtn = new System.Windows.Forms.Button();
+            this.hexesCLB = new System.Windows.Forms.CheckedListBox();
+            this.validateBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // hexRTB
-            // 
-            this.hexRTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hexRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
-            this.hexRTB.ForeColor = System.Drawing.Color.Maroon;
-            this.hexRTB.Location = new System.Drawing.Point(0, 0);
-            this.hexRTB.Name = "hexRTB";
-            this.hexRTB.Size = new System.Drawing.Size(996, 601);
-            this.hexRTB.TabIndex = 0;
-            this.hexRTB.Text = "";
-            this.hexRTB.WordWrap = false;
             // 
             // focusBtn
             // 
@@ -56,13 +45,37 @@ namespace WindowsFormsApp1.project.hexwindow
             this.focusBtn.Text = "button1";
             this.focusBtn.UseVisualStyleBackColor = true;
             // 
+            // hexesCLB
+            // 
+            this.hexesCLB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)), true);
+            this.hexesCLB.ForeColor = System.Drawing.Color.Maroon;
+            this.hexesCLB.FormattingEnabled = true;
+            this.hexesCLB.HorizontalScrollbar = true;
+            this.hexesCLB.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.hexesCLB.Location = new System.Drawing.Point(13, 13);
+            this.hexesCLB.Name = "hexesCLB";
+            this.hexesCLB.Size = new System.Drawing.Size(971, 469);
+            this.hexesCLB.ItemCheck += new ItemCheckEventHandler(OnItemChecked);
+            this.hexesCLB.TabIndex = 2;
+            // 
+            // validateBtn
+            // 
+            this.validateBtn.Location = new System.Drawing.Point(460, 492);
+            this.validateBtn.Name = "validateBtn";
+            this.validateBtn.Size = new System.Drawing.Size(78, 46);
+            this.validateBtn.TabIndex = 3;
+            this.validateBtn.Text = "Done";
+            this.validateBtn.UseVisualStyleBackColor = true;
+            this.validateBtn.Click += new System.EventHandler(this.DoneBtn_Click);
+            // 
             // HexWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(996, 601);
+            this.ClientSize = new System.Drawing.Size(996, 546);
+            this.Controls.Add(this.validateBtn);
+            this.Controls.Add(this.hexesCLB);
             this.Controls.Add(this.focusBtn);
-            this.Controls.Add(this.hexRTB);
             this.DoubleBuffered = true;
             this.Name = "HexWindow";
             this.ShowIcon = false;
@@ -72,8 +85,8 @@ namespace WindowsFormsApp1.project.hexwindow
         }
 
         #endregion
-
-        private RichTextBox hexRTB;
         private Button focusBtn;
+        private CheckedListBox hexesCLB;
+        private Button validateBtn;
     }
 }

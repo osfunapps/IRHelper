@@ -33,15 +33,16 @@ namespace LayoutProject.program
             nodeIdx = 0;
         }
 
-        internal void ReadXMLPath(string xmlPath)
+        internal void ReadXMLPath(string xmlPath, bool runOverValues)
         {
             XMLModifier.xmlPath = xmlPath;
             xmlDocument = new XmlDocument();
             xmlDocument.Load(@xmlPath);
             papaKeyNode = xmlDocument.GetElementsByTagName(ATT_KEYS)[0];
-            if (AppForm.startOver)
+            if (runOverValues)
                 keysNodesList = papaKeyNode.ChildNodes;
-            else {
+            else
+            {
                 XmlExistingValuesWorker xmlWorker = new XmlExistingValuesWorker();
                 keysNodesList = xmlWorker.GetModifiedList(this, papaKeyNode);
             }
@@ -109,8 +110,25 @@ namespace LayoutProject.program
 
         public void ClearPreviousVal()
         {
-            if(nodeIdx==0)return;
+            if (nodeIdx == 0) return;
             nodeIdx--;
+        }
+
+        public void ClearCorruptNodesFromValues(List<string> corruptNodes)
+        {
+            foreach (string corruptNode in corruptNodes)
+            {
+                foreach (XmlNode xmlNode in keysNodesList)
+                {
+                    if (xmlNode.Attributes[ATT_NAME].Value == corruptNode) { 
+                        xmlNode.InnerText = "";
+                        break;
+                    }
+                }
+            }
+
+            nodeIdx = 0;
+            xmlDocument.Save(xmlPath);
         }
     }
 }

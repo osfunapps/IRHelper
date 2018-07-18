@@ -2,6 +2,7 @@
 using LayoutProject.program;
 using LayoutProject.program.values;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ using static WindowsFormsApp2.project.mouse.ScreenColorManager;
 
 namespace WindowsFormsApp1
 {
-    internal class AppCoordinator : IProgramExeCallback, IOnInputSimulateCallback, ICursorIconCallback, IXMLModifierCallback, IFindMouseBarPositionCallback, IRecordWindowCallback, IUserCommandsListener, IHexListenerCallback
+    internal class AppCoordinator : IProgramExeCallback, IOnInputSimulateCallback, ICursorIconCallback, IXMLModifierCallback, IFindMouseBarPositionCallback, IRecordWindowCallback, IUserCommandsListener, IHexListenerCallback, IHexWindowCallback
     {
 
         //instances
@@ -55,7 +56,7 @@ namespace WindowsFormsApp1
             recordWindowErrorHandler = new RecordWindowErrorHandler(this);
             this.textToSpeech = new TextToSpeechHelper();
             javaKiller = new JavaKiller();
-            hexWindow = new HexWindow();
+            hexWindow = new HexWindow(this);
         }
 
         internal void StartSequence()
@@ -68,12 +69,12 @@ namespace WindowsFormsApp1
             mouseCoordinator.ShowDialog();
 
             hexListener.OpenHexListener();
-            ReadXmlPath();
+            ReadXmlPath(AppForm.startOver);
         }
 
-        private void ReadXmlPath()
+        private void ReadXmlPath(bool runOverValues)
         {
-            xmlModifier.ReadXMLPath(AppForm.GetXmlPath());
+            xmlModifier.ReadXMLPath(AppForm.GetXmlPath(), runOverValues);
             PrepareForNextHex();
         }
 
@@ -109,12 +110,28 @@ namespace WindowsFormsApp1
 
         public void OnAllNodesSet(XmlDocument document)
         {
-            NodesValidator nodesValidator = new NodesValidator();
-            if (nodesValidator.AreAllNodesValidated(document))
-                OnAllNodesValidated();
-            else
-                ReadXmlPath();
+            /*   NodesValidator nodesValidator = new NodesValidator();
+               if (nodesValidator.AreAllNodesValidated(document))
+                   OnAllNodesValidated();
+               else
+                   ReadXmlPath();
+           */
+            mouseCoordinator.ShowMouseNotification("");
+            hexWindow.ToggleValidateBtnEnabled(true);
+            hexWindow.ToggleValidateBtnText();
         }
+
+        public void OnValidateClicked(List<string> corruptNodes)
+        {
+            if (corruptNodes.Count != 0)
+            {
+                xmlModifier.ClearCorruptNodesFromValues(corruptNodes);
+                ReadXmlPath(false);
+            }
+            else
+                OnAllNodesValidated();
+        }
+
 
         public void OnAllNodesValidated()
         {
@@ -137,7 +154,11 @@ namespace WindowsFormsApp1
             Console.WriteLine("done!");
             RegistryHandler.DisableWindowsErrorReporting(false);
             Application.Exit();
-            Environment.Exit(1);
+            try
+            {
+                Environment.Exit(1);
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
         }
 
         public void OnBackToMainScreenError()
@@ -147,7 +168,8 @@ namespace WindowsFormsApp1
         private void HandleTextToSpeech(string nextNodeName)
         {
             if (!AppForm.TextToSpeech) return;
-            Task t = Task.Run(() => {
+            Task t = Task.Run(() =>
+            {
                 textToSpeech.SayBtn(nextNodeName);
             });
         }
@@ -182,7 +204,6 @@ namespace WindowsFormsApp1
             else
                 textToSpeech.SayBtn(UserCommandsListener.CONTINUED);
         }
-
 
     }
 }
