@@ -17,5 +17,8 @@
     <Setting Name="pauseBtn" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="freezeTime" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.3</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

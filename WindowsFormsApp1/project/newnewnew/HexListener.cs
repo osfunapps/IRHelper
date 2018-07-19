@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1.project.tools;
 
 namespace WindowsFormsApp1.project.newnewnew
 {
@@ -35,7 +36,8 @@ namespace WindowsFormsApp1.project.newnewnew
                 .GetParent(Directory.GetParent(Directory.GetParent(executingAppPath).ToString()).ToString()).ToString();
             string jarFilePath = @parentDir + "\\hex_listener\\hex_listener.jar";
             jarFilePath = AddQuotesIfRequired(jarFilePath);
-            string path = "-jar " + jarFilePath;
+            var freezeTime = FreezeConverter.GetFreezeTime();
+            string path = "-jar " + jarFilePath +" "+ freezeTime;
             p = new Process
             {
                 StartInfo =
@@ -49,7 +51,6 @@ namespace WindowsFormsApp1.project.newnewnew
             };
             p.Start();
         }
-
 
         private string AddQuotesIfRequired(string path)
         {

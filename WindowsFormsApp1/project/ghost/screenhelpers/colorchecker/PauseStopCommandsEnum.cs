@@ -90,12 +90,6 @@ namespace WindowsFormsApp2.project.mouse
 
                 }
 
-                if (WindowClosed())
-                {
-                    return;
-
-                }
-
             };
 
         }

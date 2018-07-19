@@ -82,5 +82,17 @@ namespace WindowsFormsApp1.Properties {
                 this["pauseBtn"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.3")]
+        public string freezeTime {
+            get {
+                return ((string)(this["freezeTime"]));
+            }
+            set {
+                this["freezeTime"] = value;
+            }
+        }
     }
 }

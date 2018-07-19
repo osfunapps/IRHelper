@@ -32,6 +32,7 @@ namespace WindowsFormsApp1
         private static string userPauseBtnName;
         private static bool textToSpeech;
         public static string undoBtn;
+        public static double freezeTime;
 
         public AppForm()
         {
@@ -44,22 +45,23 @@ namespace WindowsFormsApp1
 
         private void LoadPrefs()
         {
-            evenGohstPathTB.Text =  Settings.Default.eventGhostPath;
             textToSpeechCB.Checked = Settings.Default.textToSpeech;
             xmlPathTB.Text = Settings.Default.xmlPath;
             undoBtnCB.Text = Settings.Default.undoBtn;
             pauseBtnCB.Text = Settings.Default.pauseBtn;
+            freezeCB.Text = Settings.Default.freezeTime;
         }
 
         private void SaveSettings()
         {
             Settings.Default.Upgrade();
-            Settings.Default.eventGhostPath = evenGohstPathTB.Text;
             Settings.Default.textToSpeech = textToSpeech;
             Settings.Default.xmlPath = xmlPathTB.Text;
             Settings.Default.undoBtn = undoBtnCB.Text;
             Settings.Default.pauseBtn = pauseBtnCB.Text;
+            Settings.Default.freezeTime = freezeCB.Text;
             Settings.Default.Save();
+           
 
         }
 
@@ -71,17 +73,15 @@ namespace WindowsFormsApp1
         private void Go_Clicked(object sender, EventArgs e)
         {
             undoBtn = undoBtnCB.Text;
+            freezeTime = double.Parse(freezeCB.Text);
             userPauseBtnName = pauseBtnCB.SelectedItem.ToString();
-            cyclesToWait = cyclesWaitScroller.Value;
             startOver = startOverCB.Checked;
             goBtn.Enabled = false;
             xmlPathStr = xmlPathTB.Text;
-            eventGohstPath = evenGohstPathTB.Text;
             RegistryHandler.DisableWindowsErrorReporting(true);
             SaveSettings();
             textToSpeech = textToSpeechCB.Checked;
             appCoordinator.StartSequence();
-
         }
 
      
@@ -109,19 +109,11 @@ namespace WindowsFormsApp1
         private string TitleExporter(string fileLongStr) { return fileLongStr.ToString().Substring(fileLongStr.ToString().IndexOf("FileName: ") + 10); }
 
         //dialog clicks
-        private void RemotePicDialog_FileOk(object sender, CancelEventArgs e){evenGohstPathTB.Text = TitleExporter(sender.ToString());}
-
         private void OpenFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             xmlPathTB.Text = TitleExporter(sender.ToString());
         }
 
-
-        private void TrackBar1_Scroll(object sender, EventArgs e)
-        {
-            cyclesToWait = cyclesWaitScroller.Value;
-            Console.WriteLine("cycles to wait changed to: "+cyclesToWait);
-        }
 
         protected void SetCBItems()
         {
@@ -142,10 +134,6 @@ namespace WindowsFormsApp1
         }
 
 
-        private void EventGohstPathDropHandler(object sender, DragEventArgs e)
-        {
-            evenGohstPathTB.Text = ((string[])e.Data.GetData(DataFormats.FileDrop, false))[0];
-        }
 
         private void XmlPathDropHandler(object sender, DragEventArgs e)
         {

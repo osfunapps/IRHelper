@@ -98,6 +98,7 @@
     <Compile Include="project\Logger.cs" />
     <Compile Include="project\newnewnew\HexListener.cs" />
     <Compile Include="project\newnewnew\JavaKiller.cs" />
+    <Compile Include="project\tools\FreezeConverter.cs" />
     <Compile Include="project\tools\NodesValidator.cs" />
     <Compile Include="project\tools\UserSettings.cs" />
     <Compile Include="project\window\ExeWindowTitleReader.cs" />

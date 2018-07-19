@@ -14,6 +14,7 @@ using WindowsFormsApp1.project.ghost.mouselistener;
 using WindowsFormsApp1.project.ghost.screenhelpers.colorchecker;
 using WindowsFormsApp1.project.hexwindow;
 using WindowsFormsApp1.project.newnewnew;
+using WindowsFormsApp1.project.tools;
 using WindowsFormsApp2.project.mouse;
 using static LayoutProject.program.XMLModifier;
 using static WindowsFormsApp1.project.ghost.mouselistener.MouseEventListener;
@@ -84,7 +85,7 @@ namespace WindowsFormsApp1
             nextNodeName = xmlModifier.GetNextValName();
             mouseCoordinator.ShowMouseNotification(nextNodeName);
             HandleTextToSpeech(nextNodeName);
-            //userCommandsListener.ListinToUserCommands();
+            userCommandsListener.ListinToUserCommands();
             readHexTask = Task.Run(() =>
             {
                 hexListener.ListenToHex();
@@ -96,7 +97,7 @@ namespace WindowsFormsApp1
         {
             mouseCoordinator.SetMouseNotificationColor(FloatingMouseWindow.MOUSE_NOTIFICATION_ON_COLOR);
             hexWindow.SetKeyAndHex(nextNodeName, hexCode);
-            Thread.Sleep(1200);
+            Thread.Sleep(FreezeConverter.GetFreezeTime());
             mouseCoordinator.SetMouseNotificationColor(FloatingMouseWindow.MOUSE_NOTIFICATION_IDLE_COLOR);
             xmlModifier.SetNextNodeVal(hexCode);
         }
@@ -177,9 +178,10 @@ namespace WindowsFormsApp1
         public void OnUndo()
         {
             xmlModifier.ClearPreviousVal();
-            var nextNodeName = xmlModifier.GetNextValName();
+            nextNodeName = xmlModifier.GetNextValName();
             mouseCoordinator.ShowMouseNotification(nextNodeName);
             HandleTextToSpeech(nextNodeName);
+            hexWindow.ClearLastRow();
         }
 
 
@@ -187,11 +189,14 @@ namespace WindowsFormsApp1
         {
             Console.WriteLine("on user skipped");
             var finished = xmlModifier.SkipNextValAndFinish();
-            var nextVal = xmlModifier.GetNextValName();
+            nextNodeName = xmlModifier.GetNextValName();
             if (AppForm.TextToSpeech)
-                textToSpeech.SayBtn(nextVal);
-            if (!finished) mouseCoordinator.ShowMouseNotification(nextVal);
-        }
+                textToSpeech.SayBtn(nextNodeName);
+            if (!finished)
+            {
+                mouseCoordinator.ShowMouseNotification(nextNodeName);
+            }
+    }
 
 
         public void OnUserPaused(bool paused)

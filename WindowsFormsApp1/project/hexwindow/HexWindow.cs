@@ -21,6 +21,7 @@ namespace WindowsFormsApp1.project.hexwindow
         private Task t;
         private IntPtr handle;
         private IHexWindowCallback callback;
+        private string lastKey;
 
         public HexWindow(IHexWindowCallback callback)
         {
@@ -32,8 +33,10 @@ namespace WindowsFormsApp1.project.hexwindow
 
         public void SetKeyAndHex(string key, string hex)
         {
-            hexesCLB.Invoke(new MethodInvoker(delegate { hexesCLB.Items.Add(key + ": " + hex); }));
-            focusBtn.Invoke(new MethodInvoker(delegate { focusBtn.Focus(); }));
+            try {
+                hexesCLB.Invoke(new MethodInvoker(delegate { hexesCLB.Items.Add(key + ": " + hex); }));
+                focusBtn.Invoke(new MethodInvoker(delegate { focusBtn.Focus(); }));
+            } catch(Exception e) { Console.WriteLine(e.Message);}
         }
 
 
@@ -103,6 +106,11 @@ namespace WindowsFormsApp1.project.hexwindow
 
             var count = hexesCLB.CheckedItems.Count + newValChecked;
             ToggleValidateBtnText(count);
+        }
+
+        public void ClearLastRow()
+        {
+            hexesCLB.Invoke(new MethodInvoker(delegate { hexesCLB.Items.RemoveAt(hexesCLB.Items.Count-1); }));
         }
     }
 
