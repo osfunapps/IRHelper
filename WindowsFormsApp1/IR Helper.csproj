@@ -85,6 +85,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="project\ghost\inputssimulator\KeyboardMouseSimulator.cs" />
     <Compile Include="project\ghost\errors\RecordWindowErrorHandler.cs" />
+    <Compile Include="project\ghost\xml\ACKeysFetcher.cs" />
+    <Compile Include="project\ghost\xml\PropsReader.cs" />
     <Compile Include="project\ghost\xml\XmlExistingValuesWorker.cs" />
     <Compile Include="project\hexwindow\HexWindow.cs">
       <SubType>Form</SubType>

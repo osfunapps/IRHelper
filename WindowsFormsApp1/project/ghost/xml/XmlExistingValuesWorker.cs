@@ -17,11 +17,10 @@ namespace WindowsFormsApp1.project.ghost.xml
         //make a list of non hexes
         //migrate this boths lists and put the non hexed at the end. set them to be papakeynode
 
-        internal XmlNodeList GetModifiedList(XMLModifier xMLModifier, XmlNode papaKeyNode)
+        internal XmlNode GetModifiedList(XMLModifier xMLModifier, XmlNode papaKeyNode)
         {
             List<XmlNode> hexedList = new List<XmlNode>();
             List<XmlNode> emptyHexedList = new List<XmlNode>();
-            int papaChildsCount = papaKeyNode.ChildNodes.Count;
 
             foreach (XmlNode keyNode in papaKeyNode.ChildNodes)
             {
@@ -29,7 +28,6 @@ namespace WindowsFormsApp1.project.ghost.xml
                     hexedList.Add(keyNode.CloneNode(true));
                 else
                     emptyHexedList.Add(keyNode.CloneNode(true));
-
             }
 
             if (emptyHexedList.Count == 0)
@@ -49,7 +47,7 @@ namespace WindowsFormsApp1.project.ghost.xml
                 papaKeyNode.AppendChild(keyXmlNode.CloneNode(true));
             }
 
-            return papaKeyNode.ChildNodes;
+            return papaKeyNode;
         }
     }
 }

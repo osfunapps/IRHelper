@@ -26,7 +26,6 @@ namespace WindowsFormsApp1
 {
     internal class AppCoordinator : IProgramExeCallback, IOnInputSimulateCallback, ICursorIconCallback, IXMLModifierCallback, IFindMouseBarPositionCallback, IRecordWindowCallback, IUserCommandsListener, IHexListenerCallback, IHexWindowCallback
     {
-
         //instances
         private KeyboardMouseSimulator keyboardMouseSimulator;
         private CursorIconManager cursorIconManager;

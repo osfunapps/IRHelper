@@ -22,15 +22,19 @@ namespace LayoutProject.program
         private static string ATT_NAME = "name";
 
         //nodes list 
-        private XmlNodeList keysNodesList;
+        private List<XmlNode> keysNodesList;
         private int nodeIdx;
         public static string xmlPath;
         private XmlNode papaKeyNode;
+        private PropsReader propsReader;
+        private string REMOTE_TYPE_NORMAL = "normal";
+        private string REMOTE_TYPE_AC = "ac";
 
         public XMLModifier(IXMLModifierCallback callback)
         {
             xmlReaderCallback = callback;
             nodeIdx = 0;
+            this.propsReader = new PropsReader();
         }
 
         internal void ReadXMLPath(string xmlPath, bool runOverValues)
@@ -38,17 +42,50 @@ namespace LayoutProject.program
             XMLModifier.xmlPath = xmlPath;
             xmlDocument = new XmlDocument();
             xmlDocument.Load(@xmlPath);
+
+            //here we will fetch the remote keys by the remote type.
+            FetchRemoteKeysToRecord(runOverValues);
+        }
+
+        //todo: from here, we will need to think how to handle the ac remote and the other normal ones. We need to tell the system that
+        //if it's an ac remote, then insert to the list only the btns which aren't behave as screen elements.
+        private void FetchRemoteKeysToRecord(bool runOverValues)
+        {
+            
+            var remoteType = propsReader.GetRemoteType(xmlDocument);
+
             papaKeyNode = xmlDocument.GetElementsByTagName(ATT_KEYS)[0];
-            if (runOverValues)
-                keysNodesList = papaKeyNode.ChildNodes;
-            else
+
+            if (remoteType == REMOTE_TYPE_AC)
             {
-                XmlExistingValuesWorker xmlWorker = new XmlExistingValuesWorker();
-                keysNodesList = xmlWorker.GetModifiedList(this, papaKeyNode);
+                ACKeysFetcher acKeysFetcher = new ACKeysFetcher();
+                keysNodesList = acKeysFetcher.FetchKeyNodes(papaKeyNode, runOverValues);
+            }
+
+            else if (remoteType == REMOTE_TYPE_NORMAL)
+            {
+                //check the type of the remote. Remember to remove the remote type 
+                if (runOverValues)
+                    keysNodesList = ChildNodesToListNodes(papaKeyNode);
+                else
+                {
+                    XmlExistingValuesWorker xmlWorker = new XmlExistingValuesWorker();
+                    var papsXml = xmlWorker.GetModifiedList(this, papaKeyNode);
+                    keysNodesList = ChildNodesToListNodes(papsXml);
+                }
             }
 
         }
 
+        public static List<XmlNode> ChildNodesToListNodes(XmlNode xmlNode)
+        {
+            List<XmlNode> xmlNodeList = new List<XmlNode>();
+            foreach (XmlNode node in xmlNode.ChildNodes)
+            {
+             xmlNodeList.Add(node);   
+            }
+            return xmlNodeList;
+        }
 
         internal void SetNextNodeVal(string nextNodeVal)
         {
