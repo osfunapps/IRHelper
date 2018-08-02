@@ -42,7 +42,7 @@ namespace LayoutProject.program
             XMLModifier.xmlPath = xmlPath;
             xmlDocument = new XmlDocument();
             xmlDocument.Load(@xmlPath);
-
+            nodeIdx = 0;
             //here we will fetch the remote keys by the remote type.
             FetchRemoteKeysToRecord(runOverValues);
         }
@@ -95,6 +95,7 @@ namespace LayoutProject.program
 
             if (nodeIdx == keysNodesList.Count)
             {
+                nodeIdx = 0;
                 xmlReaderCallback.OnAllNodesSet(xmlDocument);
                 return;
             }

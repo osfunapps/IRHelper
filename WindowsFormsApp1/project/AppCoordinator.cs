@@ -4,6 +4,7 @@ using LayoutProject.program.values;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -42,6 +43,8 @@ namespace WindowsFormsApp1
         private JavaKiller javaKiller;
         private HexWindow hexWindow;
         private string nextNodeName;
+        private string currentXmlPath;
+        private int xmlIdx;
 
         public AppCoordinator(AppForm appForm)
         {
@@ -63,18 +66,35 @@ namespace WindowsFormsApp1
         {
             javaKiller.KillAllJavaProcessess();
             hexWindow.Show();
-
-
             //show mouse dialog
             mouseCoordinator.ShowDialog();
 
             hexListener.OpenHexListener();
-            ReadXmlPath(AppForm.startOver);
+            RunNextPath();
         }
 
-        private void ReadXmlPath(bool runOverValues)
+        private void RunNextPath()
         {
-            xmlModifier.ReadXMLPath(AppForm.GetXmlPath(), runOverValues);
+            if (xmlIdx >= AppForm.GetxmlPathsList().Length)
+            {
+                OnFinish();
+                return;
+            }
+            RunIrCycle(AppForm.GetxmlPathsList()[xmlIdx]);
+            xmlIdx++;
+        }
+
+        private void RunIrCycle(string path)
+        {
+            hexWindow.ClearWindow();
+            hexWindow.SetRemoteLabel(Directory.GetParent(path).Name);
+            currentXmlPath = path;
+            ReadXmlPath(AppForm.startOver, currentXmlPath);
+        }
+
+        private void ReadXmlPath(bool runOverValues, string xmlPath)
+        {
+            xmlModifier.ReadXMLPath(xmlPath, runOverValues);
             PrepareForNextHex();
         }
 
@@ -126,7 +146,7 @@ namespace WindowsFormsApp1
             if (corruptNodes.Count != 0)
             {
                 xmlModifier.ClearCorruptNodesFromValues(corruptNodes);
-                ReadXmlPath(false);
+                ReadXmlPath(false, currentXmlPath);
             }
             else
                 OnAllNodesValidated();
@@ -135,9 +155,13 @@ namespace WindowsFormsApp1
 
         public void OnAllNodesValidated()
         {
+            RunNextPath();
+        }
+
+        public void OnFinish()
+        {
             if (exitCalled) return;
             exitCalled = true;
-            Console.WriteLine("ion all nodes sat");
             if (AppForm.TextToSpeech)
                 textToSpeech.SayBtn(textToSpeech.EXIT_MSG);
             hexListener.KillListener();
@@ -152,7 +176,6 @@ namespace WindowsFormsApp1
             KeyboardWatcher.Stop();
             MouseWatcher.Stop();
             Console.WriteLine("done!");
-            RegistryHandler.DisableWindowsErrorReporting(false);
             Application.Exit();
             try
             {
@@ -195,7 +218,7 @@ namespace WindowsFormsApp1
             {
                 mouseCoordinator.ShowMouseNotification(nextNodeName);
             }
-    }
+        }
 
 
         public void OnUserPaused(bool paused)

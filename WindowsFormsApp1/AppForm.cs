@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -25,7 +26,7 @@ namespace WindowsFormsApp1
         private AppCoordinator appCoordinator;
 
         //outside params!
-        private static string xmlPathStr;
+        private static string[] xmlPathsList;
         private static string eventGohstPath;
         internal static bool startOver;
         internal static int cyclesToWait;
@@ -40,7 +41,6 @@ namespace WindowsFormsApp1
             InitializeComponent();
             SetCBItems();
             LoadPrefs();
-
         }
 
         private void LoadPrefs()
@@ -72,23 +72,30 @@ namespace WindowsFormsApp1
 
         private void Go_Clicked(object sender, EventArgs e)
         {
+
             undoBtn = undoBtnCB.Text;
             freezeTime = double.Parse(freezeCB.Text);
             userPauseBtnName = pauseBtnCB.SelectedItem.ToString();
             startOver = startOverCB.Checked;
             goBtn.Enabled = false;
-            xmlPathStr = xmlPathTB.Text;
             RegistryHandler.DisableWindowsErrorReporting(true);
             SaveSettings();
             textToSpeech = textToSpeechCB.Checked;
+            xmlPathsList = BreakXmlPath(xmlPathTB.Text);
             appCoordinator.StartSequence();
         }
 
-     
-
-        internal static string GetXmlPath()
+        private string[] BreakXmlPath(string xmlPathTBText)
         {
-            return xmlPathStr;
+            if (xmlPathTBText.EndsWith(".xml"))
+                return new string[]{xmlPathTBText};
+            return Directory.GetFiles(xmlPathTBText, "config.xml", SearchOption.AllDirectories);
+        }
+
+
+        internal static string[] GetxmlPathsList()
+        {
+            return xmlPathsList;
         }
 
 

@@ -69,9 +69,9 @@ namespace WindowsFormsApp1
             // 
             this.xmlPathTB.AllowDrop = true;
             this.xmlPathTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.xmlPathTB.Location = new System.Drawing.Point(72, 29);
+            this.xmlPathTB.Location = new System.Drawing.Point(90, 29);
             this.xmlPathTB.Name = "xmlPathTB";
-            this.xmlPathTB.Size = new System.Drawing.Size(234, 20);
+            this.xmlPathTB.Size = new System.Drawing.Size(216, 20);
             this.xmlPathTB.TabIndex = 1;
             this.xmlPathTB.DragDrop += new System.Windows.Forms.DragEventHandler(this.XmlPathDropHandler);
             this.xmlPathTB.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnterHandler);
@@ -82,9 +82,9 @@ namespace WindowsFormsApp1
             this.pathLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pathLabel.Location = new System.Drawing.Point(17, 31);
             this.pathLabel.Name = "pathLabel";
-            this.pathLabel.Size = new System.Drawing.Size(49, 13);
+            this.pathLabel.Size = new System.Drawing.Size(65, 13);
             this.pathLabel.TabIndex = 2;
-            this.pathLabel.Text = "Xml Path";
+            this.pathLabel.Text = "dir/Xml Path";
             // 
             // xmlPathDialog
             // 
@@ -94,7 +94,7 @@ namespace WindowsFormsApp1
             // XmlBrowseBtn
             // 
             this.XmlBrowseBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.XmlBrowseBtn.Location = new System.Drawing.Point(323, 23);
+            this.XmlBrowseBtn.Location = new System.Drawing.Point(321, 23);
             this.XmlBrowseBtn.Name = "XmlBrowseBtn";
             this.XmlBrowseBtn.Size = new System.Drawing.Size(61, 30);
             this.XmlBrowseBtn.TabIndex = 5;

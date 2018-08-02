@@ -33,10 +33,12 @@ namespace WindowsFormsApp1.project.hexwindow
 
         public void SetKeyAndHex(string key, string hex)
         {
-            try {
+            try
+            {
                 hexesCLB.Invoke(new MethodInvoker(delegate { hexesCLB.Items.Add(key + ": " + hex); }));
                 focusBtn.Invoke(new MethodInvoker(delegate { focusBtn.Focus(); }));
-            } catch(Exception e) { Console.WriteLine(e.Message);}
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
         }
 
 
@@ -110,14 +112,27 @@ namespace WindowsFormsApp1.project.hexwindow
 
         public void ClearLastRow()
         {
-            hexesCLB.Invoke(new MethodInvoker(delegate { hexesCLB.Items.RemoveAt(hexesCLB.Items.Count-1); }));
+            hexesCLB.Invoke(new MethodInvoker(delegate { hexesCLB.Items.RemoveAt(hexesCLB.Items.Count - 1); }));
         }
+
+        public void ClearWindow()
+        {
+            hexesCLB.Invoke(new MethodInvoker(delegate { hexesCLB.Items.Clear();}));
+        }
+
+        public void SetRemoteLabel(string remoteName)
+        {
+            remoteNameLabel.Invoke(new MethodInvoker(delegate { remoteNameLabel.Text = remoteName; }));
+            Invoke(new MethodInvoker(delegate { Text = remoteName; }));
+            
+        }
+
     }
 
     public interface IHexWindowCallback
-        {
-            void OnValidateClicked(List<String> corruptNodes);
-        }
-
-
+    {
+        void OnValidateClicked(List<String> corruptNodes);
     }
+
+
+}
