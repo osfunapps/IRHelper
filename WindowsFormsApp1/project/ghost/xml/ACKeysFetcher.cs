@@ -17,7 +17,7 @@ namespace LayoutProject.program
                 if (papaKeyNode.ChildNodes[i].Attributes["type"] == null)
                     continue;
 
-                if (papaKeyNode.ChildNodes[i].Attributes["type"].Value == "hex")
+                if (papaKeyNode.ChildNodes[i].Attributes["type"].Value.Contains("hex"))
                     nodesToAdd.Add(papaKeyNode.ChildNodes[i]);
                 else
                     restOfNodes.Add(papaKeyNode.ChildNodes[i]);

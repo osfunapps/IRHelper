@@ -298,7 +298,10 @@ namespace WindowsFormsApp1
         private void onFormClosedHandler(object sender, FormClosedEventArgs e)
         {
             Console.WriteLine("closing!");
+            if (AppForm.GetxmlPathsList() == null)
+                return;
             appCoordinator.OnAllNodesValidated();
+                        
         }
 
         #endregion
