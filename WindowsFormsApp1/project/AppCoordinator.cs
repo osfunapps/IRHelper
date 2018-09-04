@@ -45,6 +45,7 @@ namespace WindowsFormsApp1
         private string nextNodeName;
         private string currentXmlPath;
         private int xmlIdx;
+        private bool lastEmptyHex;
 
         public AppCoordinator(AppForm appForm)
         {
@@ -80,8 +81,9 @@ namespace WindowsFormsApp1
                 OnFinish();
                 return;
             }
-            RunIrCycle(AppForm.GetxmlPathsList()[xmlIdx]);
-            xmlIdx++;
+
+            RunIrCycle(AppForm.GetxmlPathsList()[xmlIdx++]);
+            
         }
 
         private void RunIrCycle(string path)
@@ -95,7 +97,10 @@ namespace WindowsFormsApp1
         private void ReadXmlPath(bool runOverValues, string xmlPath)
         {
             xmlModifier.ReadXMLPath(xmlPath, runOverValues);
-            PrepareForNextHex();
+            if (!xmlModifier.IsFinished())
+                PrepareForNextHex();
+            else
+                RunNextPath();
         }
 
 
@@ -114,11 +119,17 @@ namespace WindowsFormsApp1
 
         public void OnHexReturned(string hexCode)
         {
+
             mouseCoordinator.SetMouseNotificationColor(FloatingMouseWindow.MOUSE_NOTIFICATION_ON_COLOR);
             hexWindow.SetKeyAndHex(nextNodeName, hexCode);
             Thread.Sleep(FreezeConverter.GetFreezeTime());
             mouseCoordinator.SetMouseNotificationColor(FloatingMouseWindow.MOUSE_NOTIFICATION_IDLE_COLOR);
             xmlModifier.SetNextNodeVal(hexCode);
+        }
+
+        public void OnUSBIsNotConnected()
+        {
+            mouseCoordinator.ShowMouseNotification("usb not connected");
         }
 
         public void OnNodeValSet()
@@ -128,7 +139,7 @@ namespace WindowsFormsApp1
         }
 
 
-        public void OnAllNodesSet(XmlDocument document)
+        public void OnAllNodesSet()
         {
             /*   NodesValidator nodesValidator = new NodesValidator();
                if (nodesValidator.AreAllNodesValidated(document))
@@ -143,7 +154,7 @@ namespace WindowsFormsApp1
 
         public void OnValidateClicked(List<string> corruptNodes)
         {
-            if (corruptNodes.Count != 0)
+            if (corruptNodes != null && corruptNodes.Count != 0)
             {
                 xmlModifier.ClearCorruptNodesFromValues(corruptNodes);
                 ReadXmlPath(false, currentXmlPath);

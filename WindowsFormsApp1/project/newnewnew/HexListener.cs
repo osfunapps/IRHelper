@@ -25,7 +25,11 @@ namespace WindowsFormsApp1.project.newnewnew
         public void ListenToHex()
         {
             string hexOutput = p.StandardOutput.ReadLine();
-            callback.OnHexReturned(hexOutput);
+
+            if (hexOutput == null)
+                callback.OnUSBIsNotConnected();
+            else
+                callback.OnHexReturned(hexOutput);
         }
 
         public void OpenHexListener()
@@ -63,8 +67,10 @@ namespace WindowsFormsApp1.project.newnewnew
         {
             if (p != null)
             {
+                try { 
                 p.Kill();
                 p.Close();
+                } catch(Exception e) { }
             }
         }
     }
@@ -72,6 +78,7 @@ namespace WindowsFormsApp1.project.newnewnew
     public interface IHexListenerCallback
     {
         void OnHexReturned(string hex);
+        void OnUSBIsNotConnected();
     }
 
 

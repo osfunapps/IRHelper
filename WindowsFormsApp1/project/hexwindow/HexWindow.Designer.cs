@@ -76,9 +76,9 @@ namespace WindowsFormsApp1.project.hexwindow
             this.remoteNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.remoteNameLabel.Location = new System.Drawing.Point(13, 492);
             this.remoteNameLabel.Name = "remoteNameLabel";
+            this.remoteNameLabel.Text = "Calibrating...";
             this.remoteNameLabel.Size = new System.Drawing.Size(170, 31);
             this.remoteNameLabel.TabIndex = 4;
-            this.remoteNameLabel.Text = "ac_electra_1";
             // 
             // HexWindow
             // 

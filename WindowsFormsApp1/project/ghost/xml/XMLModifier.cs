@@ -51,7 +51,7 @@ namespace LayoutProject.program
         //if it's an ac remote, then insert to the list only the btns which aren't behave as screen elements.
         private void FetchRemoteKeysToRecord(bool runOverValues)
         {
-            
+
             var remoteType = propsReader.GetRemoteType(xmlDocument);
 
             papaKeyNode = xmlDocument.GetElementsByTagName(ATT_KEYS)[0];
@@ -71,6 +71,11 @@ namespace LayoutProject.program
                 {
                     XmlExistingValuesWorker xmlWorker = new XmlExistingValuesWorker();
                     var papsXml = xmlWorker.GetModifiedList(this, papaKeyNode);
+                    if (papsXml == null)
+                    {
+                        keysNodesList = new List<XmlNode>();
+                        return;
+                    }
                     keysNodesList = ChildNodesToListNodes(papsXml);
                 }
             }
@@ -82,7 +87,7 @@ namespace LayoutProject.program
             List<XmlNode> xmlNodeList = new List<XmlNode>();
             foreach (XmlNode node in xmlNode.ChildNodes)
             {
-             xmlNodeList.Add(node);   
+                xmlNodeList.Add(node);
             }
             return xmlNodeList;
         }
@@ -96,7 +101,7 @@ namespace LayoutProject.program
             if (nodeIdx == keysNodesList.Count)
             {
                 nodeIdx = 0;
-                xmlReaderCallback.OnAllNodesSet(xmlDocument);
+                xmlReaderCallback.OnAllNodesSet();
                 return;
             }
 
@@ -111,7 +116,7 @@ namespace LayoutProject.program
 
             if (nodeIdx == keysNodesList.Count)
             {
-                xmlReaderCallback.OnAllNodesSet(xmlDocument);
+                xmlReaderCallback.OnAllNodesSet();
                 return true;
             }
 
@@ -142,7 +147,7 @@ namespace LayoutProject.program
 
         public interface IXMLModifierCallback
         {
-            void OnAllNodesSet(XmlDocument document);
+            void OnAllNodesSet();
             void OnNodeValSet();
         }
 
@@ -158,7 +163,8 @@ namespace LayoutProject.program
             {
                 foreach (XmlNode xmlNode in keysNodesList)
                 {
-                    if (xmlNode.Attributes[ATT_NAME].Value == corruptNode) { 
+                    if (xmlNode.Attributes[ATT_NAME].Value == corruptNode)
+                    {
                         xmlNode.InnerText = "";
                         break;
                     }
@@ -167,6 +173,11 @@ namespace LayoutProject.program
 
             nodeIdx = 0;
             xmlDocument.Save(xmlPath);
+        }
+
+        public bool IsFinished()
+        {
+            return nodeIdx == keysNodesList.Count;
         }
     }
 }

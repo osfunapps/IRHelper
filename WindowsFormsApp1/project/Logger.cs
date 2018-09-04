@@ -12,8 +12,13 @@ namespace WindowsFormsApp1.project
 
         internal static string GetTxt()
         {
-            return "NOTICE: change EventGhost.exe to 8bit (256 color) and 'vista mode' for max performance!" +
-                   "Version 1.6:" +
+            return "Version 2.0:" +
+                   "\n- now remotes which already finished can be migrated to the same directory as the finished ones" +
+                   "\n- power off and power on switched" +
+                   "\n- disconnected usb will inform with the problem. Restart the program" +
+                   "\n- if run over is open, the session will run on all of the remotes in the directory" +
+                   "\n\nNOTICE: change EventGhost.exe to 8bit (256 color) and 'vista mode' for max performance!" +
+                   "\n\nVersion 1.6:" +
                    "\n- degree above window fixed" +
                    "\nVersion 1.5:" +
                    "\n- fixed paused and next buttons" +

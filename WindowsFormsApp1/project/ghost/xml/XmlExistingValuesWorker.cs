@@ -31,7 +31,8 @@ namespace WindowsFormsApp1.project.ghost.xml
             }
 
             if (emptyHexedList.Count == 0)
-                Application.Exit();
+                return null;
+            
 
 
             xMLModifier.SetNodeIdx(hexedList.Count);

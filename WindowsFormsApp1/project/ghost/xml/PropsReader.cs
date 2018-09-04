@@ -13,6 +13,7 @@ namespace LayoutProject.program
         {
 
             var propsPapa = document.GetElementsByTagName(ATT_PROPERTIES)[0];
+            if(propsPapa != null)
             foreach (XmlElement prop in propsPapa.ChildNodes)
             {
                 if (prop.Attributes["remote_type"] != null)
